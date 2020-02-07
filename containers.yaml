@@ -1,0 +1,28 @@
+containers:
+  - name: {md.get("name")}
+    imageDetails:
+      imagePath: {image_info.registry_path}
+      username: {image_info.username}
+      password: {image_info.passwor}
+    ports:
+    - containerPort: {cfg.get('advertised-port')}
+      protocol: TCP
+    config:
+      ALLOW_ANONYMOUS_LOGIN: 'yes'
+      OSM_SERVER: {nbi_host}
+      OSMUI_SQL_DATABASE_URI: mysql://root:{db.password}@{db.host}:{db.port}/{db.name}
+    readinessProbe:
+      tcpSocket:
+        port: {cfg.get('advertised-port')}
+      periodSeconds: 10
+      timeoutSeconds: 5
+      successThreshold: 1
+      failureThreshold: 3
+    livenessProbe:
+      tcpSocket:
+        port: {cfg.get('advertised-port')}
+      initialDelaySeconds: 30
+      periodSeconds: 10
+      timeoutSeconds: 5
+      successThreshold: 1
+      failureThreshold: 3
