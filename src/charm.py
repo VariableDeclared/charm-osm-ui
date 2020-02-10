@@ -1,11 +1,12 @@
+#!/usr/bin/env python3
 
 import sys
 sys.path.append('lib')
 from ops.charm import CharmBase
 from ops.main import main
 from ops.framework import StoredState
-from interface_mysql import MySQLClient, DatabaseError
-from oci_image import OCIImageResource, ResourceError
+from interface_mysql import MySQLClient
+from oci_image import OCIImageResource
 
 
 class OSMUIK8sCharm(CharmBase):
@@ -26,7 +27,6 @@ class OSMUIK8sCharm(CharmBase):
             self.configure_pod
         )
         self.framework.observe(self.on.config_changed, self.configure_pod)
-
 
     def configure_pod(self):
         """Make pod specification for Kubernetes and submit it to the framework
@@ -82,7 +82,6 @@ class OSMUIK8sCharm(CharmBase):
         }
 
         self.model.set_spec(pod_spec)
-
 
 
 if __name__ == "__main__":
